@@ -18,7 +18,7 @@ class Maze {
   
     init() {
       this.margin = 10;
-      this.top = 90;
+      this.top = 10;
       this.data = []; //mảng chính
       // this.columns = int(random(50) + 4);
       // this.columns = int(12)*this.level; // số cột.
@@ -26,7 +26,7 @@ class Maze {
       this.endx= this.columns
       console.log(this.columns);
       // console.log("level : "+level);
-      this.maxRecursion = 2000;
+      this.maxRecursion = 2500;
       this.currentRecursion = 0;
   
       if (this.columns * 5 > this.width - this.margin * 2) this.columns = 5;
@@ -35,7 +35,7 @@ class Maze {
       this.margin = int((this.width - this.cellSize * this.columns) / 2);
       this.rows = int((this.height - this.top - this.margin) / this.cellSize);
       this.endy = this.rows;
-      this.top = int(this.height - this.cellSize * this.rows - this.margin);
+      // this.top = int(this.height - this.cellSize * this.rows - this.margin);
       this.count = 1;
       this.totalCells = this.rows * this.columns;
       this.stack = [];
@@ -128,13 +128,26 @@ class Maze {
         const oldPosition = this.player;
         this.player = this.stack.pop();
         this.drawPath(oldPosition, this.player);
-  
+        
         return this.gerenateMoves();
       }
       // const hint = 'Nhấp chuột để tìm lối ra';
       defaultCanvas0
-      // this.drawPlayer(this.player.data[0][0], false);
       return false;
+    }
+
+    drawWin() {
+      
+        //  fill('red')
+        console.log("this.cellSize : " + this.cellSize);
+        noFill()
+        image(bImg,
+          (this.columns-1)*(this.cellSize)+ this.level*this.padding+ ((1+this.level)/2)*this.padding//+ this.level* this.level*0.7//+ (this.cellSize/10)*this.level
+          ,(this.rows-1)*(this.cellSize)+ this.level*this.padding +this.padding//+ this.level* this.level*0.7//+ (this.cellSize/10)* this.level
+          ,78/this.level
+          ,78/this.level
+          )
+        console.log("--------------------------------------- drawWin(player) { ");
     }
     // -----------------------------------------------------------
     playerPath(vct){ // 0w 1d 2s 3a
@@ -216,6 +229,9 @@ class Maze {
       console.log("win checking :" + this.endx +" - "+ this.endy +"||"+this.px +"-" +this.py);
       this.aaa= this.endx
       if(this.py == this.aaa-1 && this.px== this.endy-1){
+        this.drawWin2()
+      }
+      if(this.py == this.aaa-1 && this.px== this.endy-1){
         console.log("win checking");
         this.win = true
         Swal.fire(
@@ -225,6 +241,19 @@ class Maze {
         )
       }
     }
+    drawWin2() {
+      
+      //  fill('red')
+      console.log("this.cellSize : " + this.cellSize);
+      noFill()
+      image(cImg,
+        (this.columns-1)*(this.cellSize)+ this.level*this.padding+ ((1+this.level)/2)*this.padding//+ this.level* this.level*0.7//+ (this.cellSize/10)*this.level
+        ,(this.rows-1)*(this.cellSize)+ this.level*this.padding +this.padding//+ this.level* this.level*0.7//+ (this.cellSize/10)* this.level
+        ,78/this.level
+        ,78/this.level
+        )
+      console.log("--------------------------------------- drawWin(player) { ");
+  }
     // -----------------------------------------------------------
     startFindPath() {
       console.log("startFindPath() {");
@@ -240,7 +269,7 @@ class Maze {
   
     findPath() {
       console.log("findPath() {");
-      this.drawPlayer(this.player, true);
+      
       console.log("this.drawPlayer(this.player, true);");
       if (this.player.type !== CellType.EXIT) {
         this.player.type = CellType.SOLUTION;
@@ -268,11 +297,11 @@ class Maze {
           console.log("drawSolutionPath - function");
           this.drawSolutionPath(
             this.player,
-            newPosition.type === CellType.SOLUTION ? 'SaddleBrown' : 'Green',
+            newPosition.type === CellType.SOLUTION ? 'Grey' : 'Green',
             newPosition.type === CellType.SOLUTION ? -1 : this.player.direction
           );
           this.player = newPosition;
-          this.drawPlayer(this.player, false);
+          // this.drawPlayer(this.player, false);
           
           return true;
         } else {
@@ -282,11 +311,12 @@ class Maze {
           this.player.direction = this.player.direction - 1;
           if (this.player.direction === -1) this.player.direction = 3;
           console.log("this.drawPlayer");
-          this.drawPlayer(this.player, false);
+          // this.drawPlayer(this.player, false);
           console.log("return this.findPath();");
           return this.findPath();
         }
       }
+      // this.drawPlayer(this.player, true);
       // this.drawPlayer(this.player, false);
       console.log("   return false;");
       return false;
@@ -333,6 +363,7 @@ class Maze {
         this.cellSize - this.padding * 2
       );
       console.log("this.drawPlayer(to, false);");
+      // if(this)
       this.drawPlayer(to, false);
       fill('grey')
     }
@@ -380,36 +411,36 @@ class Maze {
       );
 
       
-      if (direction > -1) {
+      // if (direction > -1) {
         
-        const dir =
-          direction === Direction.TOP
-            ? '↑'
-            : direction === Direction.RIGHT
-            ? '→'
-            : direction === Direction.BOTTOM
-            ? '↓'
-            : direction === Direction.LEFT
-            ? '←'
-            : '';
-        fill('white');
-        textSize(this.cellSize / 2.2 - this.padding);
-        text
-        text(
-          dir,
-          this.x +
-            this.margin +
-            player.column * this.cellSize +
-            this.cellSize / 2 -
-            textWidth(dir) / 2,
-          this.y +
-            +this.top +
-            player.row * this.cellSize +
-            this.cellSize / 2 +
-            this.cellSize / 4 -
-            this.padding * 1.2
-        );
-      }
+      //   const dir =
+      //     direction === Direction.TOP
+      //       ? '↑'
+      //       : direction === Direction.RIGHT
+      //       ? '→'
+      //       : direction === Direction.BOTTOM
+      //       ? '↓'
+      //       : direction === Direction.LEFT
+      //       ? '←'
+      //       : '';
+      //   fill('white');
+      //   textSize(this.cellSize / 2.2 - this.padding);
+      //   text
+      //   text(
+      //     dir,
+      //     this.x +
+      //       this.margin +
+      //       player.column * this.cellSize +
+      //       this.cellSize / 2 -
+      //       textWidth(dir) / 2,
+      //     this.y +
+      //       +this.top +
+      //       player.row * this.cellSize +
+      //       this.cellSize / 2 +
+      //       this.cellSize / 4 -
+      //       this.padding * 1.2
+      //   );
+      // }
       // console.log(aImg);
     }
   // random hướng đi ------------------------------------------------

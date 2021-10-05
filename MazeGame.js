@@ -2,6 +2,8 @@ let maze;
 let solving = false;
 //--
 let aImg
+let bImg
+let cImg
 let Vstartgame = false
 let level = 1 ;
 
@@ -13,7 +15,7 @@ function setup() {
     0,
     0,
     1280,
-    720,
+    650,
     level,
 
   );
@@ -26,6 +28,7 @@ function setup() {
 function draw() {
   console.log("MG - function draw() {");
   if (!solving && !maze.gerenateMoves()) {
+    maze.drawWin()
     console.log('DONE');
     noLoop();
   } else if (solving) {
@@ -40,18 +43,18 @@ function draw() {
 // ex1 - click mouse để chạy - chạy từng bước
 // dùng bàn phím nhập phím chọn hướng đi, chạy đến ngã rẽ hoặc từng bước
 
-// function mouseClicked() {
-//   console.log("MG - function mouseClicked() {");
-//   if (!solving) {
-//     solving = true;
-//     console.log("startFindPath---------------------------------------");
-//     maze.startFindPath();
-//     // frameRate(1);
-//     // noLoop();
-//     loop()
-//   }
-//   // solving = false;
-// }
+function skipgame() {
+  console.log("MG - function mouseClicked() {");
+  if (!solving) {
+    solving = true;
+    console.log("startFindPath---------------------------------------");
+    maze.startFindPath();
+    frameRate(90);
+    // noLoop();
+    loop()
+  }
+  // solving = false;
+}
 
 function keyPressed() {
   let vct = int(0)  // 0w 1d 2s 3a
@@ -77,6 +80,8 @@ function keyPressed() {
 
 function preload(){
   aImg=  loadImage('Among-Us-red.png')
+  bImg=  loadImage('Among-Us-emergency.jpg')
+  cImg=  loadImage('Among-Us-summon.jpg')
 }
 
 function resetlevel(x){
