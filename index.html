@@ -1,0 +1,178 @@
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Maze - Tạo Mê cung và tìm lối ra !</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.js"></script> -->
+    <div style="padding: auto; margin: auto;">
+      <script src="p5.js"></script>
+      <script src="Direction.js"></script>
+      <script src="CellType.js"></script>
+      <script src="BorderType.js"></script>
+      <script src="Cell.js"></script>
+      <script src="Maze.js"></script>
+      <script src="mazeGame.js"></script>
+    </div>
+  </head>
+  <body>
+    
+    <div style=" width: 1300px;border: 5px solid;margin: auto; " id="cgame">
+      <div class="howplay" >
+          <div class="title" style="display: flex; justify-content: center; flex-direction: column; align-items: center;">
+            <h1 class="title-h1">
+              <span>Maze Game </span>
+              <span>Maze Game </span>
+            </h1>
+            <h2 class="title-h2"> Find the way </h2>
+          </div>
+         <div class="control-game" style="display: flex; justify-content: space-around; ">
+          <div class="item1">
+            <button onclick="startgame()" class='start-btn'> START</button> 
+            <button onclick="resetgame()" class='start-btn'> RESET </button>
+
+          </div>
+          <div class="item2">
+            <span style="color: #fff;">Choose Level :</span>
+            <button onclick="resetlevel(this.value)" class='video-game-button' value="1" >1</button>
+            <button onclick="resetlevel(this.value)" class='video-game-button' value="2"> 2</button>
+            <button onclick="resetlevel(this.value)" class='video-game-button' value="3"> 3</button>
+          </div>
+         </div>
+        
+      </div>
+    </div>
+    <!-- <canvas id="defaultCanvas0" class="p5Canvas" width="3032" height="1422" style="width: 1516px; height: 711px;"></canvas> -->
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </body>
+</html>
+
+<style>
+ @import url("https://fonts.googleapis.com/css2?family=Mr+Dafoe&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Exo:wght@900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  perspective: 300px;
+  font-size: clamp(10px, 2vw, 20px);
+  background-image: url("./download.jpeg");
+}
+
+.title-h1 {
+  position: relative;
+  font-family: "Exo";
+  font-size: 4em;
+  margin: 0;
+  transform: skew(-15deg);
+  letter-spacing: 0.03em;
+}
+.title-h1::after {
+  content: "";
+  position: absolute;
+  top: -0.1em;
+  right: 0.05em;
+  width: 0.4em;
+  height: 0.4em;
+  background: radial-gradient(white 3%, rgba(255, 255, 255, 0.3) 15%, rgba(255, 255, 255, 0.05) 60%, transparent 80%), radial-gradient(rgba(255, 255, 255, 0.2) 50%, transparent 60%) 50% 50%/5% 100%, radial-gradient(rgba(255, 255, 255, 0.2) 50%, transparent 60%) 50% 50%/70% 5%;
+  background-repeat: no-repeat;
+}
+.title-h1 span:first-child {
+  display: block;
+  text-shadow: 0 0 0.1em #8ba2d0, 0 0 0.2em black, 0 0 5em #165ff3;
+  -webkit-text-stroke: 0.06em rgba(0, 0, 0, 0.5);
+}
+.title-h1 span:last-child {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-image: linear-gradient(#032d50 25%, #00a1ef 35%, white 50%, #20125f 50%, #8313e7 55%, #ff61af 75%);
+  -webkit-text-stroke: 0.01em #94a0b9;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.title-h2 {
+  font-family: "Mr Dafoe";
+  margin: 0;
+  font-size: 2em;
+  margin-top: -0.6em;
+  color: white;
+  text-shadow: 0 0 0.05em #fff, 0 0 0.2em #fe05e1, 0 0 0.3em #fe05e1;
+  transform: rotate(-7deg);
+}
+
+.grid {
+  background: linear-gradient(transparent 65%, rgba(46, 38, 255, 0.4) 75%, #7d41e6 80%, rgba(46, 38, 255, 0.4) 85%, transparent 95%), linear-gradient(90deg, transparent 65%, rgba(46, 38, 255, 0.4) 75%, #7d41e6 80%, rgba(46, 38, 255, 0.4) 85%, transparent 95%);
+  background-size: 30px 30px;
+  width: 200vw;
+  height: 300vh;
+  position: absolute;
+  bottom: -120vh;
+  transform: rotateX(-100deg);
+  -webkit-mask-image: linear-gradient(black, rgba(0, 0, 0, 0) 80%);
+}
+
+
+.howplay {
+  font-size: 20px;
+  font-family: 'Press Start 2P', cursive;
+}
+.video-game-button {
+  font-family: 'Press Start 2P', cursive;
+	text-shadow: 1px 1px pink, -1px -1px maroon;
+font-size: 30px;
+	line-height: 1.5em;
+	text-align: center;
+	display: inline-block;
+	width: 1.5em;
+	-webkit-border-radius: .75em;
+	-moz-border-radius: .75em;
+	-o-border-radius: .75em;
+		border-radius: .75em;
+	background-color: red;
+	-webkit-box-shadow:  0 .2em maroon;
+	-moz-box-shadow:  0 .2em maroon;
+	-o-box-shadow:  0 .2em maroon;
+	box-shadow:  0 .2em maroon;
+	color: red;
+	margin: 5px;
+	background-color: red;
+	background-image: -o-linear-gradient(left top, pink 3%, red 22%, maroon 99%);
+	background-image: -moz-linear-gradient(left top, pink 3%, red 22%, maroon 99%);
+	background-image: -webkit-linear-gradient(left top, pink 3%, red 22%, maroon 99%);
+	background-image: linear-gradient(left top, pink 3%, red 22%, maroon 99%);
+	cursor: pointer;
+  padding: 0px 40px 0px 10px ;
+}
+.start-btn{
+  font-family: 'Press Start 2P', cursive;
+    text-align: center;
+	display: inline-block;
+  font-size: 20px;
+	margin:10px;
+    font-weight: bold;
+    padding: 10px 10px 10px 10px ;
+    background-color: lightgray;
+    text-shadow: -1px -1px black, 1px 1px white;
+    color: gray;
+    -webkit-border-radius: 7px;
+	-moz-border-radius: 7px;
+	-o-border-radius: 7px;
+	border-radius: 7px;
+    box-shadow: 0 .2em gray; 
+    cursor: pointer;
+
+}
+.video-game-button:active, .start-btn:active {
+	box-shadow: none;
+	position: relative;
+	top: .2em;
+}
+</style>
